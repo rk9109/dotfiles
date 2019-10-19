@@ -1,0 +1,34 @@
+#
+# shell aliases
+#
+
+# prompt confirmation cp/mv/rm
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -I'
+
+# ls
+alias ls='ls -CF --color=auto'
+alias l='ls'
+alias la='ls -A'
+alias ll='ls -lAFh'
+
+# grep
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias search='grep -nr'
+
+# cd
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# git
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+
+# miscellaneous
+alias more='less'
+alias open='xdg-open'

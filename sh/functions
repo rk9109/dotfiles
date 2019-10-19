@@ -1,0 +1,80 @@
+#
+# shell functions
+#
+
+# create (*.tar.gz)
+function maketar() {
+    if [ -e $1 ] ; then
+        tar cvzf "${1%%/}.tar.gz" "${1%%/}/"
+    else
+        echo "'$1' is not a valid file/directory!"
+    fi
+}
+
+
+# create (*.zip)
+function makezip() {
+    if [ -e $1 ] ; then
+        zip -r "${1%%/}.zip" "$1"
+    else
+        echo "'$1' is not a valid file/directory!"
+    fi
+}
+
+
+# extract compressed file formats
+function extract() {
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2)   tar xvjf $1     ;;
+            *.tar.gz)    tar xvzf $1     ;;
+            *.bz2)       bunzip2 $1      ;;
+            *.rar)       unrar x $1      ;;
+            *.gz)        gunzip $1       ;;
+            *.tar)       tar xvf $1      ;;
+            *.tbz2)      tar xvjf $1     ;;
+            *.tgz)       tar xvzf $1     ;;
+            *.zip)       unzip $1        ;;
+            *.Z)         uncompress $1   ;;
+            *.7z)        7z x $1         ;;
+            *)           echo "'$1' cannot be extracted via >extract<" ;;
+        esac
+    else
+        echo "'$1' is not a valid file!"
+    fi
+}
+
+
+# filename swap
+function swap() {
+    local TMPFILE=tmp.$$
+
+    [ $# -ne 2 ] && echo "swap: 2 arguments needed" && return 1
+    [ ! -e $1 ]  && echo "swap: $1 does not exist"  && return 1
+    [ ! -e $2 ]  && echo "swap: $2 does not exist"  && return 1
+
+    mv "$1" $TMPFILE
+    mv "$2" "$1"
+    mv $TMPFILE "$2"
+}
+
+
+# enable colored man pages
+function man() {
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+    command man "$@"
+}
+
+
+# remove python compiled byte-code
+function pyclean() {
+    DIRECTORIES=${*:-'.'}
+    find ${DIRECTORIES} -type f -name "*.py[co]" -delete
+    find ${DIRECTORIES} -type d -name "__pycache__" -delete
+}

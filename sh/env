@@ -1,0 +1,11 @@
+#
+# environment variables
+#
+
+# preferred programs
+export PAGER=less
+export EDITOR=vim
+export VISUAL=$EDITOR
+
+# use pythonrc
+export PYTHONSTARTUP=$HOME/.pythonrc
