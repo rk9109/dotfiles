@@ -3,8 +3,6 @@
 #
 
 # history settings
-set -o history
-
 shopt -s histappend
 shopt -s cmdhist
 
@@ -32,3 +30,6 @@ shopt -s checkwinsize
 
 # lesspipe
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# start history
+set -o history
