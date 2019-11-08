@@ -16,6 +16,11 @@ BBLUE="\[\033[1;34m\]"
 BWHITE="\[\033[1;37m\]"
 
 
+function _prompt_user() {
+    echo -n "$BBLACK\u$RESET"
+}
+
+
 function _prompt_date() {
     echo -n "$BBLACK$(date +%H:%M:%S)$RESET"
 }
@@ -27,7 +32,8 @@ function _prompt_pwd() {
 
 
 function _prompt_git() {
-    if [ -e ".git" ]; then
+    repo="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
+    if [ "$repo" ]; then
         branch=$(git symbolic-ref -q HEAD)
         branch=${branch##refs/heads/}
         branch=${branch:-HEAD}
@@ -43,10 +49,10 @@ function _prompt_git() {
 }
 
 # prompt:
-#   (date)(pwd)(git) >
+#   (user)(pwd)(git) >
 #
 function _prompt() {
-    PS1="$(_prompt_date) $(_prompt_pwd) $(_prompt_git)• "
+    PS1="$(_prompt_user) $(_prompt_pwd) $(_prompt_git)• "
 }
 
 
@@ -58,4 +64,4 @@ function _prompt_minimal() {
 }
 
 
-PROMPT_COMMAND="_prompt_minimal; $PROMPT_COMMAND"
+PROMPT_COMMAND="_prompt; $PROMPT_COMMAND"
