@@ -1,0 +1,43 @@
+#
+# inputrc
+#
+
+# use emacs
+set editing-mode emacs
+
+$if mode=emacs
+
+# enable home/end keys
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+
+# enable delete/insert keys
+"\e[2~": quoted-insert
+"\e[3~": delete-char
+
+# enable arrow keys
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+"\e[5C": forward-word
+"\e[5D": backward-word
+"\e\e[C": forward-word
+"\e\e[D": backward-word
+
+$endif
+
+# enable 8-bit characters
+set input-meta on
+set output-meta on
+
+# disable bell
+set bell-style none
+
+# completion settings
+set show-all-if-ambiguous on
+set completion-ignore-case on
+
+# miscellaneous settings
+set colored-stats on
+set match-hidden-files on
+set mark-directories on
+set mark-symlinked-directories on
