@@ -1,3 +1,13 @@
+" plugins
+call plug#begin('~/.vim/plugged')
+
+Plug 'airblade/vim-gitgutter'
+
+call plug#end()
+
+" plugin configuration
+set updatetime=100  " gitgutter
+
 " colorscheme
 colorscheme base16-default-dark
 let base16colorspace=256
