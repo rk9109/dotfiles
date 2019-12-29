@@ -1,0 +1,73 @@
+#
+# termite configuration
+#
+
+[options]
+
+# font settings
+font = Roboto Mono 10
+
+# cursor settings
+cursor_blink = on
+cursor_shape = block
+
+# scroll settings
+scrollbar = off
+scrollback_lines = 10000
+
+# miscellaneous
+allow_bold = true
+bold_is_bright = true
+audible_bell = false
+clickable_url = true
+dynamic_title = true
+
+[colors]
+# base16 default dark 
+# source: https://github.com/khamer/base16-termite
+
+foreground          = #d8d8d8
+foreground_bold     = #e8e8e8
+cursor              = #e8e8e8
+cursor_foreground   = #181818
+background          = rgba(24, 24, 24)
+
+# black, gray, silver, white
+color0  = #181818
+color8  = #585858
+color7  = #d8d8d8
+color15 = #f8f8f8
+
+# red
+color1  = #ab4642
+color9  = #ab4642
+
+# green
+color2  = #a1b56c
+color10 = #a1b56c
+
+# yellow
+color3  = #f7ca88
+color11 = #f7ca88
+
+# blue
+color4  = #7cafc2
+color12 = #7cafc2
+
+# purple
+color5  = #ba8baf
+color13 = #ba8baf
+
+# teal
+color6  = #86c1b9
+color14 = #86c1b9
+
+# extra colors
+color16 = #dc9656
+color17 = #a16946
+color18 = #282828
+color19 = #383838
+color20 = #b8b8b8
+color21 = #e8e8e8
+
+# vim: ft=dosini
