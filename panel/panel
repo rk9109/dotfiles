@@ -1,0 +1,178 @@
+#!/usr/bin/env bash
+#
+# lemonbar script
+#
+
+if [ $(pgrep -cx lemonbar) -gt 0 ]; then
+    echo "The panel is running." >&2
+    exit 1
+fi
+
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+
+# load configuration
+. panel_config
+
+# create panel FIFO
+PANEL_FIFO=/tmp/panel-fifo
+[ -e "${PANEL_FIFO}" ] && rm "${PANEL_FIFO}"
+mkfifo "${PANEL_FIFO}"
+
+
+# workspace indicator
+function workspace() {
+    while true; do
+        # get current workspace name
+        local cur=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==true).name')
+        # get workspace names
+        local spaces=($(xprop -root _NET_DESKTOP_NAMES | awk '{$1=$2=""; print $0}' | sed -e "s/[^0-9]/ /g"))
+
+        # indicate current workspace
+        for i in "${!spaces[@]}"; do
+            if [ "${spaces[$i]}" = "$cur" ]; then
+                spaces[$i]="%{A:i3-msg -q workspace ${spaces[$i]}:}%{B${BLUE}} ${spaces[$i]} %{B-}%{A}";
+            else
+                spaces[$i]="%{A:i3-msg -q workspace ${spaces[$i]}:} ${spaces[$i]} %{A}";
+            fi
+        done
+
+        # concatenate strings in `spaces`
+        spaces=$(IFS=" "; echo "${spaces[*]}")
+        echo "WORKSPACE_STR ${spaces}"
+        
+        sleep ${WORKSPACE_SLEEP}
+    done
+}
+
+
+# CPU status information
+function cpu() {
+    while true; do
+        local cpu=$(ps -eo pcpu | awk 'BEGIN {sum=0} {sum+=$1} END {print int(sum)}')
+        if [[ ${cpu} -ge ${CPU_ALERT} ]]; then
+            echo "CPU_STR CPU: %{F${RED}}${cpu}%{F-}"
+        elif [[ ${cpu} -ge ${CPU_WARN} ]]; then
+            echo "CPU_STR CPU: %{F${YELLOW}}${cpu}%{F-}"
+        else
+            echo "CPU_STR CPU: %{F${GREEN}}${cpu}%{F-}"
+        fi
+        sleep ${CPU_SLEEP}
+    done
+}
+
+# RAM status information
+function ram() {
+    while true; do
+        local ram=$(free | grep Mem | awk '{print int($3/$2 * 100)}')
+        if [[ ${ram} -ge ${RAM_ALERT} ]]; then
+            echo "RAM_STR RAM: %{F${RED}}${ram}%{F-}"
+        elif [[ ${ram} -ge ${RAM_WARN} ]]; then
+            echo "RAM_STR RAM: %{F${YELLOW}}${ram}%{F-}"
+        else
+            echo "RAM_STR RAM: %{F${GREEN}}${ram}%{F-}"
+        fi
+        sleep ${RAM_SLEEP}
+    done
+}
+
+
+# battery status information
+function battery() {
+    while true; do
+        local battery=$(cat /sys/class/power_supply/BAT1/capacity)
+        if [[ ${battery} -lt ${BATTERY_LOW} ]]; then
+            echo "BATTERY_STR BAT: %{F${RED}}${battery}%{F-}"
+        elif [[ ${battery} -lt ${BATTERY_HIGH} ]]; then
+            echo "BATTERY_STR BAT: %{F${YELLOW}}${battery}%{F-}"
+        else
+            echo "BATTERY_STR BAT: %{F${GREEN}}${battery}%{F-}"
+        fi
+        sleep ${BATTERY_SLEEP}
+    done
+}
+
+
+# volume indicator
+function volume() {
+    while true; do
+        local volume=$(pactl list sinks | grep Volume | head -n1 | awk '{print $5}')
+        local mute=$(pactl list sinks | grep Mute | awk '{print $2}')
+        if [[ ${mute} == "yes" ]]; then
+            echo "VOLUME_STR VOL: %{F${RED}}mute%{F-}"
+        else
+            echo "VOLUME_STR VOL: ${volume//%}"
+        fi
+        sleep ${VOLUME_SLEEP}
+    done
+}
+
+
+# network status information
+function network() {
+    while true; do
+        local network=$(iwgetid -r)
+        if [[ -z $network ]]; then
+            echo "NETWORK_STR NET: %{F${RED}}none%{F-}"
+        else
+            echo "NETWORK_STR NET: %{F${GREEN}}${network}%{F-}"
+        fi
+        sleep ${NETWORK_SLEEP}
+    done
+}
+
+
+# current time
+function clock() {
+    while true; do
+        local clock="$(date +'%a %d %I:%M')"
+        echo "CLOCK_STR ${clock}"
+        sleep ${CLOCK_SLEEP}
+    done
+}
+
+# TODO reboot button
+
+# send output into panel FIFO
+workspace > "${PANEL_FIFO}" &
+cpu       > "${PANEL_FIFO}" &
+ram       > "${PANEL_FIFO}" &
+battery   > "${PANEL_FIFO}" &
+volume    > "${PANEL_FIFO}" &
+network   > "${PANEL_FIFO}" &
+clock     > "${PANEL_FIFO}" &
+
+while read -r line; do
+    case $line in
+        WORKSPACE_STR*)
+            fn_workspace="${line#WORKSPACE_STR}"
+            ;;
+        CPU_STR*)
+            fn_cpu="${line#CPU_STR}"
+            ;;
+        RAM_STR*)
+            fn_ram="${line#RAM_STR}"
+            ;;
+        BATTERY_STR*)
+            fn_battery="${line#BATTERY_STR}"
+            ;;
+        VOLUME_STR*)
+            fn_volume="${line#VOLUME_STR}"
+            ;;
+        NETWORK_STR*)
+            fn_network="${line#NETWORK_STR}"
+            ;;
+        CLOCK_STR*)
+            fn_clock="${line#CLOCK_STR}"
+            ;;
+    esac
+    echo "%{l}${fn_workspace}" \
+         "%{r}${fn_cpu}"       \
+         "${SEP}${fn_ram}"     \
+         "${SEP}${fn_battery}" \
+         "${SEP}${fn_volume}"  \
+         "${SEP}${fn_network}" \
+         "${SEP}${fn_clock}"   \
+         "${SEP}"
+done < "${PANEL_FIFO}" | lemonbar ${OPTIONS} | sh > /dev/null
+
+# vim: ft=sh

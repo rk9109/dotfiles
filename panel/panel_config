@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+#
+# lemonbar configuration
+#
+
+# ------------------------------------------------------------------------------
+# [ constants ]
+# ------------------------------------------------------------------------------
+
+# foreground color
+FG="#F8F8F8"
+
+# background color
+BG="#181818"
+
+BLUE="#7CAFC2"
+RED="#AB4642"
+YELLOW="#F7CA88"
+GREEN="#A1B56C"
+
+# status constants
+BATTERY_LOW=20
+BATTERY_HIGH=80
+CPU_WARN=50
+CPU_ALERT=80
+RAM_WARN=50
+RAM_ALERT=80
+
+# spacing
+SEP=" "
+
+# ------------------------------------------------------------------------------
+# [ lemonbar options ]
+# ------------------------------------------------------------------------------
+
+FONT="GohuFont"
+ICONFONT=""
+WIDTH="1920"
+HEIGHT="25"
+XOFF="0"
+YOFF="0"
+
+OPTIONS="-f ${FONT} -f ${ICONFONT}             \
+         -g ${WIDTH}x${HEIGHT}+${XOFF}+${YOFF} \
+         -B ${BG} -F ${FG}"
+
+# ------------------------------------------------------------------------------
+# [ sleep options ]
+# ------------------------------------------------------------------------------
+
+WORKSPACE_SLEEP=0.1
+CPU_SLEEP=1
+RAM_SLEEP=1
+BATTERY_SLEEP=30
+VOLUME_SLEEP=0.5
+NETWORK_SLEEP=15
+CLOCK_SLEEP=5
+
+# vim: ft=sh
