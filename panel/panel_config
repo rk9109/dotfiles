@@ -34,13 +34,12 @@ SEP=" "
 # ------------------------------------------------------------------------------
 
 FONT="GohuFont"
-ICONFONT=""
 WIDTH="1920"
 HEIGHT="25"
 XOFF="0"
 YOFF="0"
 
-OPTIONS="-f ${FONT} -f ${ICONFONT}             \
+OPTIONS="-f ${FONT}                            \
          -g ${WIDTH}x${HEIGHT}+${XOFF}+${YOFF} \
          -B ${BG} -F ${FG}"
 
