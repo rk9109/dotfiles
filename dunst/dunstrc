@@ -1,0 +1,74 @@
+[global]
+    ## focus settings
+    monitor = 0
+    follow = mouse
+
+    ## appearance settings
+    transparency = 0
+    frame_width = 4
+    frame_color = "#181818"
+    separator_height = 0
+    separator_color = frame
+    geometry = "300x5-15+40"
+    padding = 10
+    horizontal_padding = 10
+    notification_height = 0
+    shrink = no
+    indicate_hidden = yes
+
+    ## text settings
+    font = GohuFont
+    line_height = 0
+    markup = full
+    format = "<b>%s</b>\n%b"
+    word_wrap = yes
+    alignment = left
+    ellipsize = middle
+    ignore_newline = no
+    show_indicators = yes
+
+    ## notification settings
+    sort = yes
+    idle_threshold = 120
+    stack_duplicates = true
+    hide_duplicate_count = false
+    show_age_threshold = -1
+    sticky_history = no
+    history_length = 20
+
+    ## icon settings
+    icon_position = off
+    max_icon_size = 32
+
+    ## miscellaneous settings
+    browser = /usr/bin/firefox -new-tab
+    always_run_script = true
+    title = dunst
+    class = dunst
+
+[shortcuts]
+    close = ctrl+space
+    close_all = ctrl+shift+space
+    history = ctrl+grave
+    context = ctrl+shift+period
+
+[urgency_low]
+    background = "#181818"
+    foreground = "#F8F8F8"
+    timeout = 5
+    #icon = /path/to/icon
+
+[urgency_normal]
+    background = "#181818"
+    foreground = "#F8F8F8"
+    timeout = 5
+    #icon = /path/to/icon
+
+[urgency_critical]
+    background = "#181818"
+    foreground = "#F8F8F8"
+    frame_color = "#AB4642"
+    timeout = 0
+    #icon = /path/to/icon
+
+# vim: ft=cfg
