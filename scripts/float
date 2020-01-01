@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# toggle float
+#
+
+focused=$(xprop -root _NET_ACTIVE_WINDOW | awk -F' ' '{print $NF}')
+if xprop -id "${focused}" I3_FLOATING_WINDOW | grep -q "not found"; then
+    i3-msg "floating enable, border normal" >> /dev/null
+else
+    i3-msg "floating disable, border none" >> /dev/null
+fi

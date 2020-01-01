@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# system information
+#
+
+user=$(whoami)
+distro=$(hostnamectl | grep "Operating System" | cut -d ':' -f2)
+kernel=$(uname -r)
+wm=$(wmctrl -m | grep "Name" | cut -d ' ' -f2)
+shell=$(zsh --version | cut -c -10)
+term=$TERM
+
+printf "\e[0m\n"
+printf "\e[1;34m          user \e[0m${user## }\n"
+printf "\e[1;34m        distro \e[0m${distro## }\n"
+printf "\e[1;34m        kernel \e[0m${kernel## }\n"
+printf "\e[1;34m         shell \e[0m${shell## }\n"
+printf "\e[1;34m            wm \e[0m${wm## }\n"
+printf "\e[1;34m          term \e[0m${term## }\n"
+printf "\e[0m\n"
+
+blocks
