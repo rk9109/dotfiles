@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+OPTIONS="-h 25 -fn GohuFont \
+         -nb #181818        \
+         -nf #F8F8F8        \
+         -sb #7CAFC2        \
+         -sf #181818"
+
+SEL=$(echo -e "lock\nlogout\nreboot\nshutdown\ncancel" | dmenu ${OPTIONS})
+
+case $SEL in
+    lock)
+        slock
+        ;;
+    logout)
+        i3-msg exit
+        ;;
+    reboot)
+        shutdown -r
+        ;;
+    shutdown) 
+        shutdown -P
+        ;;
+    *)
+        ;;
+esac

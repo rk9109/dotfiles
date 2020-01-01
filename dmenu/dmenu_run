@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+OPTIONS="-h 25 -fn GohuFont \
+         -nb #181818        \
+         -nf #F8F8F8        \
+         -sb #7CAFC2        \
+         -sf #181818"
+
+dmenu_path | dmenu ${OPTIONS} "$@" | ${SHELL:-"/bin/sh"} &
