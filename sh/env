@@ -9,3 +9,6 @@ export VISUAL=$EDITOR
 
 # use pythonrc
 export PYTHONSTARTUP=$HOME/.pythonrc
+
+# disable node history file
+export NODE_REPL_HISTORY="/dev/null"
