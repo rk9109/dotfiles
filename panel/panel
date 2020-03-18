@@ -11,7 +11,13 @@ fi
 trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
 
 # load configuration
-. panel_config
+PANEL_CONFIG="$HOME/.panel/panel_config"
+if [ -f ${PANEL_CONFIG} ]; then
+    source ${PANEL_CONFIG}
+else
+    echo "${PANEL_CONFIG} not found." >&2
+    exit 1
+fi
 
 # create panel FIFO
 PANEL_FIFO=/tmp/panel-fifo

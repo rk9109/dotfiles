@@ -15,8 +15,10 @@ BG="#181818"
 
 BLUE="#7CAFC2"
 RED="#AB4642"
-YELLOW="#F7CA88"
-GREEN="#A1B56C"
+#YELLOW="#F7CA88"
+#GREEN="#A1B56C"
+YELLOW="#F8F8F8"
+GREEN="#F8F8F8"
 
 # status constants
 BATTERY_LOW=20
@@ -33,7 +35,7 @@ SEP=" "
 # [ lemonbar options ]
 # ------------------------------------------------------------------------------
 
-FONT="GohuFont"
+FONT="-*-gohufont-medium-r-*-*-14-*-*-*-*-*-*-*"
 WIDTH="1920"
 HEIGHT="25"
 XOFF="0"
