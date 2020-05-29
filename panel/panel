@@ -56,11 +56,9 @@ function cpu() {
     while true; do
         local cpu=$(ps -eo pcpu | awk 'BEGIN {sum=0} {sum+=$1} END {print int(sum)}')
         if [[ ${cpu} -ge ${CPU_ALERT} ]]; then
-            echo "CPU_STR CPU: %{F${RED}}${cpu}%{F-}"
-        elif [[ ${cpu} -ge ${CPU_WARN} ]]; then
-            echo "CPU_STR CPU: %{F${YELLOW}}${cpu}%{F-}"
+            echo "CPU_STR %{F${FG_DARK}}CPU:%{F-} %{F${RED}}${cpu}%{F-}"
         else
-            echo "CPU_STR CPU: %{F${GREEN}}${cpu}%{F-}"
+            echo "CPU_STR %{F${FG_DARK}}CPU:%{F-} ${cpu}"
         fi
         sleep ${CPU_SLEEP}
     done
@@ -71,11 +69,9 @@ function ram() {
     while true; do
         local ram=$(free | grep Mem | awk '{print int($3/$2 * 100)}')
         if [[ ${ram} -ge ${RAM_ALERT} ]]; then
-            echo "RAM_STR RAM: %{F${RED}}${ram}%{F-}"
-        elif [[ ${ram} -ge ${RAM_WARN} ]]; then
-            echo "RAM_STR RAM: %{F${YELLOW}}${ram}%{F-}"
+            echo "RAM_STR %{F${FG_DARK}}RAM:%{F-} %{F${RED}}${ram}%{F-}"
         else
-            echo "RAM_STR RAM: %{F${GREEN}}${ram}%{F-}"
+            echo "RAM_STR %{F${FG_DARK}}RAM:%{F-} ${ram}"
         fi
         sleep ${RAM_SLEEP}
     done
@@ -86,12 +82,10 @@ function ram() {
 function battery() {
     while true; do
         local battery=$(cat /sys/class/power_supply/BAT1/capacity)
-        if [[ ${battery} -lt ${BATTERY_LOW} ]]; then
-            echo "BATTERY_STR BAT: %{F${RED}}${battery}%{F-}"
-        elif [[ ${battery} -lt ${BATTERY_HIGH} ]]; then
-            echo "BATTERY_STR BAT: %{F${YELLOW}}${battery}%{F-}"
+        if [[ ${battery} -lt ${BATTERY_ALERT} ]]; then
+            echo "BATTERY_STR %{F${FG_DARK}}BAT:%{F-} %{F${RED}}${battery}%{F-}"
         else
-            echo "BATTERY_STR BAT: %{F${GREEN}}${battery}%{F-}"
+            echo "BATTERY_STR %{F${FG_DARK}}BAT:%{F-} ${battery}"
         fi
         sleep ${BATTERY_SLEEP}
     done
@@ -104,9 +98,9 @@ function volume() {
         local volume=$(pactl list sinks | grep Volume | head -n1 | awk '{print $5}')
         local mute=$(pactl list sinks | grep Mute | awk '{print $2}')
         if [[ ${mute} == "yes" ]]; then
-            echo "VOLUME_STR VOL: %{F${RED}}mute%{F-}"
+            echo "VOLUME_STR %{F${FG_DARK}}VOL:%{F-} %{F${RED}}mute%{F-}"
         else
-            echo "VOLUME_STR VOL: ${volume//%}"
+            echo "VOLUME_STR %{F${FG_DARK}}VOL:%{F-} ${volume//%}"
         fi
         sleep ${VOLUME_SLEEP}
     done
@@ -118,9 +112,9 @@ function network() {
     while true; do
         local network=$(iwgetid -r)
         if [[ -z $network ]]; then
-            echo "NETWORK_STR NET: %{F${RED}}none%{F-}"
+            echo "NETWORK_STR %{F${FG_DARK}}NET:%{F-} %{F${RED}}none%{F-}"
         else
-            echo "NETWORK_STR NET: %{F${GREEN}}${network}%{F-}"
+            echo "NETWORK_STR %{F${FG_DARK}}NET:%{F-} ${network}"
         fi
         sleep ${NETWORK_SLEEP}
     done
