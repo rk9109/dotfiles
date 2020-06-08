@@ -134,7 +134,8 @@ bindsym $mod+Shift+o reload restart
 #  -----------------------------------------------------------------------------
 
 # launcher
-bindsym $mod+r exec dmenu_run
+bindsym $mod+r exec /home/rinik/.scripts/dmenu_run
+bindsym $mod+Shift+e exec /home/rinik/.scripts/dmenu_logout
 
 # audio controls
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
@@ -142,5 +143,5 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume 0 -5%
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 0 +5%
 
 # brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 10
-bindsym XF86MonBrightnessDown exec xbacklight -dec 10
+bindsym XF86MonBrightnessUp exec backlight -i 10
+bindsym XF86MonBrightnessDown exec backlight -d 10
