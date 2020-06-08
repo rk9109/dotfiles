@@ -64,6 +64,7 @@ function cpu() {
     done
 }
 
+
 # RAM status information
 function ram() {
     while true; do
@@ -121,6 +122,16 @@ function network() {
 }
 
 
+# brightness status information
+function brightness() {
+    while true; do
+        local brightness=$(backlight)
+        echo "BRIGHTNESS_STR %{F${FG_DARK}}BRT:%{F-} ${brightness}"
+        sleep ${BRIGHTNESS_SLEEP}
+    done
+}
+
+
 # current time
 function clock() {
     while true; do
@@ -130,16 +141,15 @@ function clock() {
     done
 }
 
-# TODO reboot button
-
 # send output into panel FIFO
-workspace > "${PANEL_FIFO}" &
-cpu       > "${PANEL_FIFO}" &
-ram       > "${PANEL_FIFO}" &
-battery   > "${PANEL_FIFO}" &
-volume    > "${PANEL_FIFO}" &
-network   > "${PANEL_FIFO}" &
-clock     > "${PANEL_FIFO}" &
+workspace  > "${PANEL_FIFO}" &
+cpu        > "${PANEL_FIFO}" &
+ram        > "${PANEL_FIFO}" &
+battery    > "${PANEL_FIFO}" &
+volume     > "${PANEL_FIFO}" &
+network    > "${PANEL_FIFO}" &
+brightness > "${PANEL_FIFO}" &
+clock      > "${PANEL_FIFO}" &
 
 while read -r line; do
     case $line in
@@ -161,17 +171,21 @@ while read -r line; do
         NETWORK_STR*)
             fn_network="${line#NETWORK_STR}"
             ;;
+        BRIGHTNESS_STR*)
+            fn_brightness="${line#BRIGHTNESS_STR}"
+            ;;
         CLOCK_STR*)
             fn_clock="${line#CLOCK_STR}"
             ;;
     esac
-    echo "%{l}${fn_workspace}" \
-         "%{r}${fn_cpu}"       \
-         "${SEP}${fn_ram}"     \
-         "${SEP}${fn_battery}" \
-         "${SEP}${fn_volume}"  \
-         "${SEP}${fn_network}" \
-         "${SEP}${fn_clock}"   \
+    echo "%{l}${fn_workspace}"    \
+         "%{r}${fn_cpu}"          \
+         "${SEP}${fn_ram}"        \
+         "${SEP}${fn_battery}"    \
+         "${SEP}${fn_brightness}" \
+         "${SEP}${fn_volume}"     \
+         "${SEP}${fn_network}"    \
+         "${SEP}${fn_clock}"      \
          "${SEP}"
 done < "${PANEL_FIFO}" | lemonbar ${OPTIONS} | sh > /dev/null
 
