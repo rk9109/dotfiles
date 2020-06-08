@@ -1,9 +1,9 @@
-#
-# Xresources
-#
+!
+! Xresources
+!
 
-# base16 default dark
-# source: https://github.com/base16-templates/base16-xresources
+! base16 default dark
+! source: https://github.com/base16-templates/base16-xresources
 
 *foreground:   #d8d8d8
 *background:   #181818
@@ -26,3 +26,10 @@
 *color13:      #e8e8e8
 *color14:      #a16946
 *color15:      #f8f8f8
+
+Xft.dpi: 96
+Xft.antialias: true
+Xft.autohint: false
+Xft.hinting: true
+Xft.hintstyle: hintfull
+Xft.rgba: rgb
